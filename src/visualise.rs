@@ -1,26 +1,40 @@
-use std::io::{stdout, stderr};
 use image::GenericImageView;
-use std::fs;
+use std::{fs, error, fmt, io};
 use term_size;
+use termimage;
 
-pub fn run(file_path: String) -> i32 {
-    if let Err(err) = draw_image(file_path) {
-        err.print_error(&mut stderr());
-        err.exit_value()
-    } else {
-        0
+#[derive(Debug, Clone)]
+pub struct VisualisationError;
+
+impl error::Error for VisualisationError {}
+
+impl fmt::Display for VisualisationError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> Result<(), fmt::Error> {
+        write!(f, "Visualisation error")
     }
 }
 
-fn draw_image(file_path: String) -> Result<(), termimage::Error> {
+impl From<termimage::Error, > for VisualisationError {
+    fn from(_: termimage::Error) -> Self {
+        VisualisationError
+    }
+}
+
+impl From<std::io::Error, > for VisualisationError {
+    fn from(_: std::io::Error) -> Self {
+        VisualisationError
+    }
+}
+
+pub fn draw_image(file_path: &str) -> Result<(), VisualisationError> {
     let terminal_size = get_terminal_size();
-    let file = (file_path.to_owned(), fs::canonicalize(file_path).unwrap());
+    let file = (file_path.to_owned(), fs::canonicalize(file_path)?);
     let format = termimage::ops::guess_format(&file)?;
     let img = termimage::ops::load_image(&file, format)?;
     let img_size = termimage::ops::image_resized_size(img.dimensions(), terminal_size, true);
     let resized = termimage::ops::resize_image(&img, img_size);
 
-    termimage::ops::write_ansi_truecolor(&mut stdout(), &resized);
+    termimage::ops::write_ansi_truecolor(&mut io::stdout(), &resized);
     Ok(())
 }
 
