@@ -60,10 +60,10 @@ impl From<url::ParseError> for DownloadError {
     }
 }
 
-pub fn get_image(args: &clap::ArgMatches) -> Result<String, DownloadError> {
+pub fn get_image(args: &clap::ArgMatches, url_string: &str) -> Result<String, DownloadError> {
     let mut easy = easy::Easy::new();
 
-    easy.url("https://dog.ceo/api/breeds/image/random")?;
+    easy.url(url_string)?;
     let mut data = Vec::new();
     {
         let mut transfer = easy.transfer();
@@ -81,11 +81,7 @@ pub fn get_image(args: &clap::ArgMatches) -> Result<String, DownloadError> {
     let img_url = &html_json["message"].as_str().ok_or(DownloadError)?;
 
     let url = duma::utils::parse_url(img_url)?;
-
     duma::download::http_download(url, &args, clap::crate_version!())?;
 
-    let path = env::current_dir()?;
-    let file_name = args.value_of("FILE").ok_or(DownloadError)?;
-
-    Ok(String::from(format!("{}/{}", path.to_str().ok_or(DownloadError)?, file_name)))
+    Ok(args.value_of("FILE").ok_or(DownloadError)?.to_owned())
 }

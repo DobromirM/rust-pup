@@ -16,3 +16,4 @@ duma="*"
 clap="*"
 failure="*"
 url="*"
+phf={version = "*", features = ["macros"]}
