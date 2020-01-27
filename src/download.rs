@@ -1,5 +1,4 @@
 use curl::easy;
-use serde_json;
 use duma;
 use std::{env, string, error};
 use clap;
