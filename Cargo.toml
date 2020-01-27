@@ -1,7 +1,7 @@
 [package]
 name = "pup"
 description= "A CLI tool for instant pup retrieval."
-license = "GNU General Public License"
+license = "GPL-3.0-or-later"
 repository = "https://github.com/DobromirM/rust-pup"
 homepage = "https://dmarinov.com"
 keywords = ["dog", "pup", "doggo"]
