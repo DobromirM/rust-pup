@@ -5,7 +5,7 @@ license = "GPL-3.0-or-later"
 repository = "https://github.com/DobromirM/rust-pup"
 homepage = "https://dmarinov.com"
 keywords = ["dog", "pup", "doggo"]
-version = "0.1.0"
+version = "0.1.1"
 authors = ["DobromirM <mr.d.marinov@gmail.com>"]
 edition = "2018"
 
