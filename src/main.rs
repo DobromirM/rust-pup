@@ -10,7 +10,7 @@ fn main() {
     let image_path = match get_path() {
         Some(path) => path,
         None => {
-            println!("Cannot find a suitable place for a dog :(");
+            println!("Cannot find a suitable place for a pup :(");
             process::exit(1);
         }
     };
@@ -39,7 +39,7 @@ fn main() {
             .value_name("breed")
             .long("breed")
             .short("b")
-            .help("Select the breed of the dogs")
+            .help("Select the breed of the pups")
             .takes_value(true))
         .arg(Arg::with_name("list")
             .required(false)
@@ -64,7 +64,7 @@ fn main() {
         let file_path = match download::get_image(&args, &url_string) {
             Ok(value) => value,
             Err(_) => {
-                println!("Failed to retrieve dog :(");
+                println!("Failed to retrieve pup :(");
                 process::exit(2);
             }
         };
@@ -76,16 +76,16 @@ fn main() {
                 .arg("-FZ")
                 .arg(&file_path)
                 .output().is_err() {
-                println!("The dog is hiding :(");
+                println!("The pup is hiding :(");
             }
         } else {
             if visualise::draw_image(&file_path).is_err() {
-                println!("The dog is hiding :(");
+                println!("The pup is hiding :(");
             }
         }
 
         if fs::remove_file(&file_path).is_err() {
-            println!("The dog got stuck :( \nYou can find it in {}", &file_path);
+            println!("The pup got stuck :( \nYou can find it in {}", &file_path);
             process::exit(3);
         }
     }
