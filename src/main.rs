@@ -1,12 +1,10 @@
-use clap::{Arg, App};
-use std::{fs, process, env, collections};
-use maplit::btreemap;
+use clap::{App, Arg};
 use lazy_static::lazy_static;
+use maplit::btreemap;
+use std::{collections, env, fs, process};
 
-mod visualise;
 mod download;
-
-//use phf::{Map, phf_map};
+mod visualise;
 
 fn main() {
     let image_path = match get_path() {
@@ -19,43 +17,55 @@ fn main() {
 
     let args = App::new("")
         .version("0.1")
-        .arg(Arg::with_name("quiet")
-            .required(false)
-            .value_name("quiet")
-            .default_value("true")
-            .takes_value(true))
-        .arg(Arg::with_name("FILE")
-            .required(false)
-            .value_name("FILE")
-            .default_value(&image_path)
-            .takes_value(true))
-        .arg(Arg::with_name("hd")
-            .required(false)
-            .value_name("hd")
-            .long("hd")
-            .short("h")
-            .help("Displays the image in HD")
-            .takes_value(false))
-        .arg(Arg::with_name("breed")
-            .required(false)
-            .value_name("breed")
-            .long("breed")
-            .short("b")
-            .help("Select the breed of the pups")
-            .takes_value(true))
-        .arg(Arg::with_name("list")
-            .required(false)
-            .value_name("list")
-            .long("list")
-            .short("l")
-            .help("List all possible breeds")
-            .takes_value(false))
+        .arg(
+            Arg::with_name("quiet")
+                .required(false)
+                .value_name("quiet")
+                .default_value("true")
+                .takes_value(true),
+        )
+        .arg(
+            Arg::with_name("FILE")
+                .required(false)
+                .value_name("FILE")
+                .default_value(&image_path)
+                .takes_value(true),
+        )
+        .arg(
+            Arg::with_name("hd")
+                .required(false)
+                .value_name("hd")
+                .long("hd")
+                .short("h")
+                .help("Displays the image in HD")
+                .takes_value(false),
+        )
+        .arg(
+            Arg::with_name("breed")
+                .required(false)
+                .value_name("breed")
+                .long("breed")
+                .short("b")
+                .help("Select the breed of the pups")
+                .takes_value(true),
+        )
+        .arg(
+            Arg::with_name("list")
+                .required(false)
+                .value_name("list")
+                .long("list")
+                .short("l")
+                .help("List all possible breeds")
+                .takes_value(false),
+        )
         .get_matches();
 
-
     let url_string = match args.value_of("breed") {
-        Some(breed) if BREEDS.contains_key(breed) => format!("https://dog.ceo/api/breed/{}/images/random", BREEDS.get(breed).unwrap()),
-        _ => String::from("https://dog.ceo/api/breeds/image/random")
+        Some(breed) if BREEDS.contains_key(breed) => format!(
+            "https://dog.ceo/api/breed/{}/images/random",
+            BREEDS.get(breed).unwrap()
+        ),
+        _ => String::from("https://dog.ceo/api/breeds/image/random"),
     };
 
     if args.is_present("list") {
@@ -77,7 +87,9 @@ fn main() {
                 .arg("-x")
                 .arg("-FZ")
                 .arg(&file_path)
-                .output().is_err() {
+                .output()
+                .is_err()
+            {
                 println!("The pup is hiding :(");
             }
         } else {
@@ -93,8 +105,7 @@ fn main() {
     }
 }
 
-fn get_path() -> Option<String>
-{
+fn get_path() -> Option<String> {
     let image_path = format!("{}/{}", env::temp_dir().to_str()?, "dog.jpg");
     Some(image_path)
 }

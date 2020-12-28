@@ -5,22 +5,18 @@ license = "GPL-3.0-or-later"
 repository = "https://github.com/DobromirM/rust-pup"
 homepage = "https://dmarinov.com"
 keywords = ["dog", "pup", "doggo"]
-version = "0.1.1"
+version = "0.2.0"
 authors = ["DobromirM <mr.d.marinov@gmail.com>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-termimage = "0.5.0"
-image = "0.22.4"
-curl = "0.4.25"
-term_size = "0.3.1"
-duma= "0.1.0"
-clap= "2.33.0"
-failure= "0.1.6"
-url= "1.7.2"
-serde_json= "1.0.45"
-phf={version = "0.8.0", features = ["macros"]}
+viuer = "0.3.1"
+curl = "0.4.34"
+term_size = "1.0.0-beta1"
+duma = "0.2.0"
+clap = "2.33.2"
+serde_json= "1.0.60"
 maplit = "1.0.2"
 lazy_static = "1.4.0"

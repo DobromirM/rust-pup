@@ -1,10 +1,8 @@
-use image::GenericImageView;
-use std::{fs, error, fmt, io};
-use term_size;
-use termimage;
+use std::{error, fmt};
+use viuer::{print_from_file, Config};
 
 #[derive(Debug, Clone)]
-pub struct VisualisationError;
+pub(crate) struct VisualisationError;
 
 impl error::Error for VisualisationError {}
 
@@ -14,27 +12,16 @@ impl fmt::Display for VisualisationError {
     }
 }
 
-impl From<termimage::Error, > for VisualisationError {
-    fn from(_: termimage::Error) -> Self {
-        VisualisationError
-    }
-}
-
-impl From<std::io::Error, > for VisualisationError {
-    fn from(_: std::io::Error) -> Self {
-        VisualisationError
-    }
-}
-
-pub fn draw_image(file_path: &str) -> Result<(), VisualisationError> {
+pub(crate) fn draw_image(file_path: &str) -> Result<(), VisualisationError> {
     let terminal_size = get_terminal_size();
-    let file = (file_path.to_owned(), fs::canonicalize(file_path)?);
-    let format = termimage::ops::guess_format(&file)?;
-    let img = termimage::ops::load_image(&file, format)?;
-    let img_size = termimage::ops::image_resized_size(img.dimensions(), terminal_size, true);
-    let resized = termimage::ops::resize_image(&img, img_size);
 
-    termimage::ops::write_ansi_truecolor(&mut io::stdout(), &resized);
+    let conf = Config {
+        width: Some(terminal_size.0),
+        height: Some(terminal_size.1),
+        ..Default::default()
+    };
+
+    print_from_file(file_path, &conf).map_err(|_| VisualisationError)?;
     Ok(())
 }
 
