@@ -16,7 +16,7 @@ fn main() {
     };
 
     let args = App::new("")
-        .version("0.1")
+        .version("0.2.1")
         .arg(
             Arg::with_name("quiet")
                 .required(false)
