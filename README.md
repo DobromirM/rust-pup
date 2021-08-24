@@ -1,1 +1,1 @@
-# rust-pup
+# Rust pup
